@@ -9,6 +9,9 @@ var solver = new CalibrateLaunch();
 
 // var solutionEasy = solver.SolveEasy(input.Input);
 
+
 var solutionHard = solver.SolveHard(input.Input);
+
+
 // Console.WriteLine($"Easy: {solutionEasy}");
 Console.WriteLine($"Hard: {solutionHard}");
