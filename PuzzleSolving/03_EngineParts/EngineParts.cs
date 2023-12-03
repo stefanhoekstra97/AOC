@@ -4,25 +4,23 @@ namespace PuzzleSolving._03_EngineParts;
 
 internal class GearChar
 {
-    public int GearVerticalIndex { get; }
-    public int GearHorizontalIndex { get; }
+    private int GearVerticalIndex { get; }
+    private int GearHorizontalIndex { get; }
 
     public int GearPower
     {
         get
         {
-            if (PartNumbers.Count == 2)
+            if (_partNumbers.Count == 2)
             {
-                return PartNumbers.First() * PartNumbers.Last();
+                return _partNumbers.First() * _partNumbers.Last();
             }
 
             return 0;
         }
     }
 
-
-
-    public List<int> PartNumbers = new();
+    private readonly List<int> _partNumbers = new();
     public GearChar(int gearHorizontalindex, int gearVerticalIndex)
     {
         GearVerticalIndex = gearVerticalIndex;
@@ -48,27 +46,27 @@ internal class GearChar
         if (char.IsDigit(line[GearHorizontalIndex]))
         {
             var foundNumber = GetFullPartNumber(line, GearHorizontalIndex);
-            if (!PartNumbers.Contains(foundNumber))
+            if (!_partNumbers.Contains(foundNumber))
             {
-                PartNumbers.Add(foundNumber);
+                _partNumbers.Add(foundNumber);
             }
         }
 
         if (line.Length > GearHorizontalIndex + 1 && char.IsDigit(line[GearHorizontalIndex + 1]))
         {
             var foundNumber = GetFullPartNumber(line, GearHorizontalIndex + 1);
-            if (!PartNumbers.Contains(foundNumber))
+            if (!_partNumbers.Contains(foundNumber))
             {
-                PartNumbers.Add(foundNumber);
+                _partNumbers.Add(foundNumber);
             }
         }
 
-        if (GearHorizontalIndex > 0 && char.IsDigit(line[GearHorizontalIndex - 1]))
+        if (GearHorizontalIndex <= 0 || !char.IsDigit(line[GearHorizontalIndex - 1])) return;
         {
             var foundNumber = GetFullPartNumber(line, GearHorizontalIndex - 1);
-            if (!PartNumbers.Contains(foundNumber))
+            if (!_partNumbers.Contains(foundNumber))
             {
-                PartNumbers.Add(foundNumber);
+                _partNumbers.Add(foundNumber);
             }
         }
     }
@@ -92,33 +90,22 @@ internal class GearChar
 
 public class EngineParts
 {
-    public int SolveHard(PuzzleInput input)
+    public static int SolveHard(PuzzleInput input)
     {
         var listOfGears = new List<GearChar>();
         foreach (var lineWithIndex in input.Lines.Select((value, index) => (value, index))
                      .Where(tuple => tuple.value.Contains('*')))
         {
-            foreach (var gearChar in lineWithIndex.value.Select((gearChar, gearIndex) => (gearChar, gearIndex))
-                         .Where(tuple => tuple.gearChar.Equals('*')))
-            {
-                listOfGears.Add(new GearChar(gearChar.gearIndex, lineWithIndex.index));
-            }
+            listOfGears.AddRange(lineWithIndex.value.Select((gearChar, gearIndex) => (gearChar, gearIndex))
+                .Where(tuple => tuple.gearChar.Equals('*'))
+                .Select(gearChar => new GearChar(gearChar.gearIndex, lineWithIndex.index)));
         }
-        listOfGears.ForEach(g => g.DetermineGearPower(input));
-        
-        foreach (var g in listOfGears)
-        {
-            Console.WriteLine($"Gear at {g.GearVerticalIndex}, {g.GearHorizontalIndex}");
-            foreach (var pn in g.PartNumbers)
-            {
-                Console.WriteLine(pn);
-            }            
-        }
+        listOfGears.AsParallel().ForAll(g => g.DetermineGearPower(input));
         
         return listOfGears.Sum(g => g.GearPower);
     }
     
-    public int SolveEasy(PuzzleInput input)
+    public static int SolveEasy(PuzzleInput input)
     {
         var sumOfParts = 0;
         foreach (var lineWithIndex in input.Lines.Select((value, i) => (value, i)))
@@ -132,54 +119,48 @@ public class EngineParts
                 }
                 else
                 {
-                    if (startOfNumber > 0)
+                    if (startOfNumber <= 0) continue;
+                    var isAddedToPartsSum = false;
+                    var partValue = int.Parse(lineWithIndex.value.Substring(charWithHorizontalIndex.i - startOfNumber, startOfNumber));
+                    // Determine if it is part of engine partnumber
+                    var left = charWithHorizontalIndex.i - startOfNumber - 1;
+                    if (left < 0)
                     {
-                        bool isAddedToPartsSum = false;
-                        var partValue = int.Parse(lineWithIndex.value.Substring(charWithHorizontalIndex.i - startOfNumber, startOfNumber));
-                        // Determine if it is part of engine partnumber
-                        var left = charWithHorizontalIndex.i - startOfNumber - 1;
-                        if (left < 0)
-                        {
-                            left = 0;
-                        }
+                        left = 0;
+                    }
                         
-                        if (lineWithIndex.i > 0)
-                        {
-                            // Check row above
-                            var rowAbove = input.Lines[lineWithIndex.i - 1];
-                            var stringToSearch = rowAbove!.Substring(left, startOfNumber + 2);
-                            if (!isAddedToPartsSum && stringToSearch.Any(IsSpecialCharacter))
-                            {
-                                sumOfParts += partValue;
-                                isAddedToPartsSum = true;
-                            }
-                        }
-
-                        if (!isAddedToPartsSum && lineWithIndex.value.Substring(left, startOfNumber + 2)
-                                .Any(IsSpecialCharacter))
+                    if (lineWithIndex.i > 0)
+                    {
+                        // Check row above
+                        var rowAbove = input.Lines[lineWithIndex.i - 1];
+                        var stringToSearch = rowAbove!.Substring(left, startOfNumber + 2);
+                        if (!isAddedToPartsSum && stringToSearch.Any(IsSpecialCharacter))
                         {
                             sumOfParts += partValue;
                             isAddedToPartsSum = true;
-                        } 
-
-                        if (lineWithIndex.i < (input.Lines.Count - 1))
-                        {
-                            var rowBelow = input.Lines[lineWithIndex.i + 1];
-                            var stringToSearch = rowBelow!.Substring(left, startOfNumber + 2);
-                            if (!isAddedToPartsSum && stringToSearch.Any(IsSpecialCharacter))
-                            {
-                                sumOfParts += partValue;
-                            }
                         }
-                        startOfNumber = 0;
                     }
 
-                }
+                    if (!isAddedToPartsSum && lineWithIndex.value.Substring(left, startOfNumber + 2)
+                            .Any(IsSpecialCharacter))
+                    {
+                        sumOfParts += partValue;
+                        isAddedToPartsSum = true;
+                    } 
 
-                
+                    if (lineWithIndex.i < (input.Lines.Count - 1))
+                    {
+                        var rowBelow = input.Lines[lineWithIndex.i + 1];
+                        var stringToSearch = rowBelow!.Substring(left, startOfNumber + 2);
+                        if (!isAddedToPartsSum && stringToSearch.Any(IsSpecialCharacter))
+                        {
+                            sumOfParts += partValue;
+                        }
+                    }
+                    startOfNumber = 0;
+                }
             }
         }
-
         return sumOfParts;
     }
 

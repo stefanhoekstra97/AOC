@@ -3,7 +3,7 @@ using PuzzleSolving;
 
 namespace ConsoleHost.TestPuzzle;
 
-public static class DayOneTest
+public static class Day01Runner
 {
     public static async Task TestEasy()
     {

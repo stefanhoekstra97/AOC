@@ -1,11 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-
-using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Running;
-using Benchmarks.DayOneBenchmarks;
-using Benchmarks.DayTwoBenchmarks;
+using Benchmarks.Benchmarks;
 
 // var summary = BenchmarkRunner.Run(typeof(CalibrateLaunchBench));
 
-var summary = BenchmarkRunner.Run(typeof(CubeGameBenchmarks));
+// var summary = BenchmarkRunner.Run(typeof(Day02CubeGameBench));
+var summary = BenchmarkRunner.Run(typeof(Day03EngineBench));

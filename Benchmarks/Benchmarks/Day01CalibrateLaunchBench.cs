@@ -2,9 +2,9 @@ using BenchmarkDotNet.Attributes;
 using Infrastructure;
 using PuzzleSolving;
 
-namespace Benchmarks.DayOneBenchmarks;
+namespace Benchmarks.Benchmarks;
 
-public class CalibrateLaunchBench
+public class Day01CalibrateLaunchBench
 {
     private string _input;
     private CalibrateLaunch _solver;

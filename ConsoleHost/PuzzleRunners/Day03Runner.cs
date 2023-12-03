@@ -3,14 +3,14 @@ using PuzzleSolving._03_EngineParts;
 
 namespace ConsoleHost.TestPuzzle;
 
-public static class DayThree
+public static class Day03Runner
 {
     public static async Task TestSample()
     {
         var input = await ReadFile.ReadFromDisk("sample_input", 3);
         var solver = new EngineParts();
 
-        var result = solver.SolveEasy(input);
+        var result = EngineParts.SolveEasy(input);
 
         Console.WriteLine($"Result easy: {result}");
 
@@ -22,7 +22,7 @@ public static class DayThree
         var input = await ReadFile.ReadFromDisk("sample_input", 3);
         var solver = new EngineParts();
 
-        var result = solver.SolveHard(input);
+        var result = EngineParts.SolveHard(input);
 
         Console.WriteLine($"Result hard: {result}");
 
@@ -33,7 +33,7 @@ public static class DayThree
         var input = await ReadFile.ReadFromDisk("puzzle_input_mod", 3);
         var solver = new EngineParts();
 
-        var result = solver.SolveHard(input);
+        var result = EngineParts.SolveHard(input);
 
         Console.WriteLine($"Result hard: {result}");
 
@@ -44,7 +44,7 @@ public static class DayThree
         var input = await ReadFile.ReadFromDisk("puzzle_input_mod", 3);
         var solver = new EngineParts();
 
-        var result = solver.SolveEasy(input);
+        var result = EngineParts.SolveEasy(input);
 
         Console.WriteLine($"Result easy: {result}");
 

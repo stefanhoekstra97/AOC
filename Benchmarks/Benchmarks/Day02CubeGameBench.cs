@@ -1,13 +1,11 @@
+using BenchmarkDotNet.Attributes;
+using Infrastructure;
 using Infrastructure.Entities;
 using PuzzleSolving._02_CubeGame;
 
-namespace Benchmarks.DayTwoBenchmarks;
+namespace Benchmarks.Benchmarks;
 
-using BenchmarkDotNet.Attributes;
-using Infrastructure;
-using PuzzleSolving;
-
-public class CubeGameBenchmarks
+public class Day02CubeGameBench
 {
     private PuzzleInput _input;
     private CubeGame _solver;
