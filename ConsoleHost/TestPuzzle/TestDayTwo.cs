@@ -23,6 +23,15 @@ public class TestDayTwo
         Console.WriteLine($"Easy result: {result}");
     }
     
+    public static async Task TestEasyRegex()
+    {
+        var input = await ReadFile.ReadFromDisk("puzzle_input", 2);
+        var solver = new CubeGame();
+
+        var result = solver.SolveEasyRegex(input);
+        Console.WriteLine($"Easy regexed result: {result}");
+    }
+    
     public static async Task TestHardSample()
     {
         var input = await ReadFile.ReadFromDisk("sample_hard", 2);

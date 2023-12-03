@@ -7,11 +7,6 @@ public class CalibrateLaunch
         return input.Split("\r\n").AsParallel().Sum(line => int.Parse($"{line.First(char.IsDigit)}{line.Last(char.IsDigit)}"));
     }
     
-    public int SolveEasySlower(string input)
-    {
-        return input.Split("\r\n").Sum(line => int.Parse($"{line.First(char.IsDigit)}{line.Last(char.IsDigit)}"));
-    }
-    
     public int SolveHard(string input)
     {
         return SolveEasy(input
@@ -25,6 +20,11 @@ public class CalibrateLaunch
             .Replace("eight", "e8t")
             .Replace("nine", "n9e")
         );
+    }
+    
+    public int SolveEasySlower(string input)
+    {
+        return input.Split("\r\n").Sum(line => int.Parse($"{line.First(char.IsDigit)}{line.Last(char.IsDigit)}"));
     }
     
     public int SolveHardSlower(string input)

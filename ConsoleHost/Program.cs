@@ -4,7 +4,9 @@ using ConsoleHost.TestPuzzle;
 using Infrastructure;
 using PuzzleSolving;
 
-// await DayOneTest.TestHard();
-await TestDayTwo.TestHard();
+// await DayOneTest.TestHardW();
+// await TestDayTwo.TestHard();
 
 // await TestDayTwo.TestHardSample();
+await TestDayTwo.TestEasyRegex();
+await TestDayTwo.TestEasy();

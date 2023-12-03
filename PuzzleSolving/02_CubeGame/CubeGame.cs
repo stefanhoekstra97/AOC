@@ -3,7 +3,7 @@ using Infrastructure.Entities;
 
 namespace PuzzleSolving._02_CubeGame;
 
-public class CubeGame
+public partial class CubeGame
 {
     private readonly Dictionary<string, int> _easyConstraintColors = new Dictionary<string, int>()
     {
@@ -11,12 +11,20 @@ public class CubeGame
         { "green", 13 },
         { "blue", 14 }
     };
+
+    private readonly Regex _regexRed = RedRegex();
+    private readonly Regex _regexGreen = GreenRegex();
+    private readonly Regex _regexBlue = BlueRegex();
+
+    public int SolveEasyRegex(PuzzleInput input)
+    {
+        return input.Input.Split("\r\n").Where(line => !_regexRed.IsMatch(line) && !_regexBlue.IsMatch(line) && !_regexGreen.IsMatch(line)).Sum(ExtractGameId);
+    }
     
     public int SolveEasy(PuzzleInput input)
     {
         var lines = input.Input.Split("\r\n");
-        var possibleIds = (from line in lines let gameId = ExtractGameId(line) where IsGamePossible(line) select gameId).ToList();
-
+        var possibleIds = (from line in lines let gameId = ExtractGameId(line) where !IsGamePossible(line) select gameId).ToList();
         return possibleIds.Sum();
     }
 
@@ -28,7 +36,7 @@ public class CubeGame
 
     private static int GetPowerFromInput(string input)
     {
-        List<int> powers = new List<int>(3);
+        List<int> powers = new List<int>();
         var reveals = input.Split(": ").Last().Replace(';', ',').Split(", ");
         IEnumerable<(int amnt, string color)> revealTyped =
             reveals.Select(s => s.Split(" ")).Select(k => (int.Parse(k.First()), k.Last()));
@@ -43,7 +51,7 @@ public class CubeGame
     private bool IsGamePossible(string line)
     {
         var gameEntries = line.Split(":")[1].Split(";");
-        return gameEntries.All(IsRevealPossible);
+        return gameEntries.Any(s => !IsRevealPossible(s));
     }
 
     private bool IsRevealPossible(string revealed)
@@ -58,4 +66,13 @@ public class CubeGame
         var number = parts.First().Split(" ").Last();
         return int.Parse(number);
     }
+
+    [GeneratedRegex(@"((1[5-9])|([2-9]\d)|(\d{3,})) blue")]
+    private static partial Regex BlueRegex();
+    
+    [GeneratedRegex(@"((1[4-9])|([2-9]\d)|(\d{3,})) green")]
+    private static partial Regex GreenRegex();
+    
+    [GeneratedRegex(@"((1[3-9])|([2-9]\d)|(\d{3,})) red")]
+    private static partial Regex RedRegex();
 }

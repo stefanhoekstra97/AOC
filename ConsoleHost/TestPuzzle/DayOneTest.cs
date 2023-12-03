@@ -25,4 +25,17 @@ public static class DayOneTest
         Console.WriteLine($"Hard: {solutionHard}");
 
     }
+    public static async Task TestHardW()
+    {
+        var solver = new CalibrateLaunch();
+        var input = await ReadFile.ReadFromDisk("WouterInput", 1);
+        var inputTransformed = await ReadFile.ReadFromDisk("WouterTransformed", 1);
+
+        var solutionHard = solver.SolveHard(input.Input);
+        var solutionTransformed = solver.SolveHard(inputTransformed.Input);
+
+        Console.WriteLine($"Hard: {solutionHard}");
+        Console.WriteLine($"Hard transformed: {solutionTransformed}");
+
+    }
 }
