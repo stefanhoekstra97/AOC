@@ -8,5 +8,7 @@ using PuzzleSolving;
 // await TestDayTwo.TestHard();
 
 // await TestDayTwo.TestHardSample();
-await TestDayTwo.TestEasyRegex();
-await TestDayTwo.TestEasy();
+// await TestDayTwo.TestEasyRegex();
+// await TestDayTwo.TestEasy();
+
+await DayThree.TestSecond();
