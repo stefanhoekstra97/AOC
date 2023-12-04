@@ -34,6 +34,14 @@ public static class Day04Runner
         var input = await ReadFile.ReadFromDisk("puzzle_input", 4);
         var result = ScratchCards.SolvePartTwo(input);
 
-        Console.WriteLine($"Part two result: {result}");
+        Console.WriteLine($": {result} : Part two result");
+    }
+    
+    public static async Task RunPartTwoAlt()
+    {
+        var input = await ReadFile.ReadFromDisk("puzzle_input", 4);
+        var result = ScratchCards.SolvePartTwoAlternative(input);
+
+        Console.WriteLine($": {result} : Part two ALTERNATIVE result");
     }
 }

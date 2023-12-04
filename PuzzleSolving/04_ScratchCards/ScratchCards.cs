@@ -35,6 +35,30 @@ public class ScratchCards
 
         return cardCounter.Sum();
     }
+
+    public static int SolvePartTwoAlternative(PuzzleInput input)
+    {
+        var cardCounter = Enumerable.Range(1, input.Lines.Count).Select(n => 1).ToArray();
+        foreach (var line in input.Lines.Select((value, i) => (value, i)))
+        {
+            var cards = line.value.Split(": ").Last().Split(" | ");
+            
+            var winningNums = cards[0].Split(" ").Where(s => !string.IsNullOrWhiteSpace(s))
+                .Select(int.Parse);
+            
+            var myCard = cards[1].Split(" ").Where(s => !string.IsNullOrWhiteSpace(s))
+                .Select(int.Parse);
+            var score = winningNums.Count(n => myCard.Contains(n));
+            var curIndexVal = cardCounter[line.i];
+            for (var i = 1; i < score + 1; i++)
+            {
+                cardCounter[i + line.i] += curIndexVal;
+            }
+        }
+
+        return cardCounter.Sum();
+    }
+    
     internal class ScratchCardObj
     {
         private readonly IEnumerable<int> _numbers;

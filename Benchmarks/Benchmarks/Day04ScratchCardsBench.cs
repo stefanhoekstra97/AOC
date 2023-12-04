@@ -16,15 +16,21 @@ public class Day04ScratchCardsBench
         _input = puzzleInput;
     }
 
-    [Benchmark]
+    // [Benchmark]
     public void SolvePartOne()
     {
         ScratchCards.SolvePartOne(_input);
     }
     
-    [Benchmark]
+    // [Benchmark]
     public void SolvePartTwo()
     {
         ScratchCards.SolvePartTwo(_input);
     }
+    [Benchmark]
+    public void SolvePartTwoAlt()
+    {
+        ScratchCards.SolvePartTwoAlternative(_input);
+    }
+    
 }
