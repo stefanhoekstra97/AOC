@@ -6,4 +6,5 @@ using Benchmarks.Benchmarks;
 // var summary = BenchmarkRunner.Run(typeof(CalibrateLaunchBench));
 
 // var summary = BenchmarkRunner.Run(typeof(Day02CubeGameBench));
-var summary = BenchmarkRunner.Run(typeof(Day03EngineBench));
+// var summary = BenchmarkRunner.Run(typeof(Day03EngineBench));
+var summary = BenchmarkRunner.Run(typeof(Day04ScratchCardsBench));
