@@ -4,6 +4,7 @@ using ConsoleHost.TestPuzzle;
 
 
 // await Day03Runner.TestSecond();
-await Day04Runner.RunPartTwo();
-await Day04Runner.RunPartTwoAlt();
 // await Day04Runner.RunSampleInputPartTwo();
+
+// await Day05Runner.RunSamplePartTwo();
+await Day05Runner.RunPuzzlePartTwo();
