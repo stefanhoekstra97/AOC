@@ -3,4 +3,4 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
-**/puzzle_input.txt
+**/*puzzle_input.txt
