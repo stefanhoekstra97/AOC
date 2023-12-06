@@ -10,30 +10,32 @@ public static class BoatGame
             .Split(" ", StringSplitOptions.TrimEntries)[1..]
             .Where(s => !string.IsNullOrWhiteSpace(s))
             .Select(int.Parse).ToArray();
-        
+
         var distancesInMm = input.Lines[1]
             .Split(" ", StringSplitOptions.TrimEntries)[1..]
             .Where(s => !string.IsNullOrWhiteSpace(s))
             .Select(int.Parse).ToArray();
-        
-        var runningMultiple = 1L;
-        
-        for (int i = 0; i < timesInMs.Length; i++)
-        {
-            var resultForSet = GetNumberOfPossibleWins(timesInMs[i], distancesInMm[i]);
-            
-            runningMultiple *= resultForSet;
-            Console.WriteLine($"Result for i {i} is {resultForSet}");
-        }
-        return runningMultiple;
+
+        return timesInMs.Select((t, i) => GetNumberOfPossibleWins(t, distancesInMm[i]))
+            .Aggregate(1L, (current, resultForSet) => current * resultForSet);
     }
-    
+
     public static long SolvePartTwo(PuzzleInput input)
     {
         var time = long.Parse(input.Lines[0].Replace(" ", "").Split(":")[1]);
         var distance = long.Parse(input.Lines[1].Replace(" ", "").Split(":")[1]);
-        
+
         return GetNumberOfPossibleWins(time, distance);
+    }
+
+    public static long? SolvePartTwoBSearch(PuzzleInput input)
+    {
+        var time = long.Parse(input.Lines[0].Replace(" ", "").Split(":")[1]);
+        var distance = long.Parse(input.Lines[1].Replace(" ", "").Split(":")[1]);
+
+
+        var minTimeToBeat = GetMinTimeBinarySearch(time, distance, null, null);
+        return (time + 1) - (2 * minTimeToBeat);
     }
 
     private static long GetNumberOfPossibleWins(long timeAvailable, long distanceToBeat)
@@ -44,12 +46,7 @@ public static class BoatGame
 
     private static long GetMinTimeToPushButton(long timeAvailable, long distanceToBeat)
     {
-        if (distanceToBeat == 0)
-        {
-            return 1;
-        }
-
-        for (var i = 0; i < timeAvailable / 2; i++)
+        for (var i = 1; i < timeAvailable / 2; i++)
         {
             if (i * (timeAvailable - i) > distanceToBeat)
             {
@@ -58,5 +55,33 @@ public static class BoatGame
         }
 
         throw new ArgumentException($"Not beatable.. Time in ms: {timeAvailable}, distance: {distanceToBeat}");
+    }
+
+    private static long? GetMinTimeBinarySearch(long timeAvailable, long distanceToBeat, long? currentMaxSearchMarker,
+        long? currentIndex)
+    {
+        currentMaxSearchMarker ??= timeAvailable / 2;
+        currentIndex ??= currentMaxSearchMarker / 2;
+
+        var markerBeats = currentIndex * (timeAvailable - currentIndex) > distanceToBeat;
+        var nextMarkerBeats = (currentIndex + 1) * (timeAvailable - (currentIndex + 1)) > distanceToBeat;
+
+        if (!markerBeats && nextMarkerBeats)
+        {
+            return currentIndex + 1;
+        }
+        
+        if (markerBeats)
+        {
+            return GetMinTimeBinarySearch(timeAvailable, distanceToBeat, currentIndex, currentIndex / 2);
+        }
+
+        if (!markerBeats && !nextMarkerBeats)
+        {
+            var nextSearchIndex = currentIndex + (currentMaxSearchMarker - currentIndex) / 2;
+            return GetMinTimeBinarySearch(timeAvailable, distanceToBeat, currentMaxSearchMarker, nextSearchIndex);
+        }
+
+        throw new ArgumentException("waaa");
     }
 }

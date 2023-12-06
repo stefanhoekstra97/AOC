@@ -10,3 +10,4 @@ using ConsoleHost.TestPuzzle;
 // await Day05Runner.RunPuzzlePartTwo();
 await Day06Runner.RunPuzzleOne();
 await Day06Runner.RunPuzzleTwo();
+await Day06Runner.RunPuzzleTwoBSearch();

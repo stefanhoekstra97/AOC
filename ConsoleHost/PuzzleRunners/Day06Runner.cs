@@ -32,4 +32,11 @@ public static class Day06Runner
         var result = BoatGame.SolvePartTwo(input);
         Console.WriteLine($"result for part TWO: {result}");
     }
+    
+    public static async Task RunPuzzleTwoBSearch()
+    {
+        var input = await ReadFile.ReadFromDisk("puzzle_input", 6);
+        var result = BoatGame.SolvePartTwoBSearch(input);
+        Console.WriteLine($"result for part TWO: {result}");
+    }
 }

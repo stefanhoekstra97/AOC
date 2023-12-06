@@ -8,4 +8,4 @@ using Benchmarks.Benchmarks;
 // var summary = BenchmarkRunner.Run(typeof(Day02CubeGameBench));
 // var summary = BenchmarkRunner.Run(typeof(Day03EngineBench));
 // var summary = BenchmarkRunner.Run(typeof(Day04ScratchCardsBench));
-var summary = BenchmarkRunner.Run(typeof(Day05Bench));
+var summary = BenchmarkRunner.Run(typeof(Day06BoatBench));
