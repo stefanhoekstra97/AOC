@@ -82,6 +82,6 @@ public static class BoatGame
             return GetMinTimeBinarySearch(timeAvailable, distanceToBeat, currentMaxSearchMarker, nextSearchIndex);
         }
 
-        throw new ArgumentException("waaa");
+        throw new ArgumentException("Could not find solution.");
     }
 }
