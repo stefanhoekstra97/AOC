@@ -60,11 +60,11 @@ public static class SeedPlanter
 
         return allResults.Min();
     }
-    
-    
-    internal class MapOfMaps
+
+
+    private class MapOfMaps
     {
-        public List<MapToType> AvailableMaps = new();
+        private readonly List<MapToType> _availableMaps = new();
         
         public MapOfMaps(StreamReader linesToMap)
         {
@@ -74,7 +74,7 @@ public static class SeedPlanter
                 var splitMapType = line!.Replace(" map:", "").Split("-to-");
 
                 var mapToAdd = new MapToType(linesToMap, splitMapType.First(), splitMapType.Last());
-                AvailableMaps.Add(mapToAdd);
+                _availableMaps.Add(mapToAdd);
             }
         }
 
@@ -84,7 +84,7 @@ public static class SeedPlanter
             
             while (!currentType.Equals(destinationType))
             {
-                var mapToUse = AvailableMaps.First(m => m.FromType.Equals(currentType));
+                var mapToUse = _availableMaps.First(m => m.FromType.Equals(currentType));
 
                 seedValue = mapToUse.MapSource(seedValue);    
                 currentType = mapToUse.ToType;
@@ -100,7 +100,7 @@ public static class SeedPlanter
             
             while (!currentType.Equals(destinationType))
             {
-                    var mapToUse = AvailableMaps.First(m => m.FromType.Equals(currentType));
+                    var mapToUse = _availableMaps.First(m => m.FromType.Equals(currentType));
                     var newRanges = new List<(long start, long range)>();
                     foreach (var rangeofSeed in ranges)
                     {
@@ -110,24 +110,19 @@ public static class SeedPlanter
                     ranges.Clear();
                     ranges = newRanges;
                     currentType = mapToUse.ToType;
-                    // Console.WriteLine($"New ranges for type {currentType}:");
-                    // ranges.Sort((one, two) => one.start.CompareTo(two.start));
-                    // ranges.ForEach(r => Console.WriteLine($"Start: {r.start}, end: {r.start + r.range}, range: {r.range}"));
 
             }
-            
-            // ranges.ForEach(r => Console.WriteLine($"Start: {r.start}, range: {r.range}"));
-            // Console.WriteLine(ranges.Min(s => s.start));
+
             return ranges.Min(s => s.start);
         }
     }
-    
-    internal class MapToType
-    {
-        public string FromType;
-        public string ToType;
 
-        public List<SeedMapping> maps = new();
+    private class MapToType
+    {
+        public readonly string FromType;
+        public readonly string ToType;
+
+        private readonly List<SeedMapping> _maps = new();
 
         public MapToType(StreamReader stream, string fromType, string toType)
         {
@@ -139,18 +134,15 @@ public static class SeedPlanter
                 
                 if (string.IsNullOrWhiteSpace(line)) break;
                 
-                maps.Add(new SeedMapping(line));
+                _maps.Add(new SeedMapping(line));
             }
         }
 
         public long MapSource(long source)
         {
-            foreach (var seedMapping in maps)
+            foreach (var seedMapping in _maps.Where(seedMapping => seedMapping.Source <= source && seedMapping.Source + seedMapping.Range > source))
             {
-                if (seedMapping.Source <= source && seedMapping.Source + seedMapping.Range > source)
-                {
-                    return source + (seedMapping.Destination - seedMapping.Source);
-                } 
+                return source + (seedMapping.Destination - seedMapping.Source);
             }
 
             return source;
@@ -159,7 +151,7 @@ public static class SeedPlanter
         public IEnumerable<(long start, long range)> MapFromRange((long start, long range) seed)
         {
             var matchingMaps = new List<(long start, long range)>();
-            foreach (var seedMapping in maps)
+            foreach (var seedMapping in _maps)
             {
                 // Case: Range overflows left
                 if (seed.start - seedMapping.Source > 0 && (seedMapping.Source + seedMapping.Range) > seed.start)
@@ -196,10 +188,7 @@ public static class SeedPlanter
                     matchingMaps.Add((seedMapping.Destination, seedMapping.Range));
                 }
             }
-
-            IEnumerable<(long start, long range)> t; 
-            // t = !ToType.Equals("location") ?  : matchingMaps;
-            return FindAndFillGaps(matchingMaps, seed, maps).ToList();
+            return FindAndFillGaps(matchingMaps, seed, _maps).ToList();
         }
 
         private static IEnumerable<(long start, long range)> FindAndFillGaps(IEnumerable<(long start, long range)> mappingToFill,
