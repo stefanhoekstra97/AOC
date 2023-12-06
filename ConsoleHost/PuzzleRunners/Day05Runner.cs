@@ -39,13 +39,4 @@ public static class Day05Runner
 
         Console.WriteLine($"Part two output: {result}");
     }
-    
-    public static async Task RunDebugPartTwo()
-    {
-        var input = await ReadFile.ReadFromDisk("debug", 5);
-
-        var result = SeedPlanter.SolvePartTwo(input);
-
-        Console.WriteLine($"Part two output: {result}");
-    }
 }
