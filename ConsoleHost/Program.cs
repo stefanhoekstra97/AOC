@@ -13,7 +13,7 @@ using ConsoleHost.TestPuzzle;
 // await Day06Runner.RunPuzzleTwoBSearch();
 
 
-await Day07Runner.RunPuzzlePartOne();
+// await Day07Runner.RunPuzzlePartOne();
 await Day07Runner.RunPuzzlePartTwo();
 
 // await Day07Runner.RunExtraSample();

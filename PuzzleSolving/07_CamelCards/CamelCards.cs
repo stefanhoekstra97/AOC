@@ -2,21 +2,19 @@ using Infrastructure.Entities;
 
 namespace PuzzleSolving._07_CamelCards;
 
-public class CamelCards
+public static class CamelCards
 {
-    
     public static long SolvePartOne(PuzzleInput input)
     {
-        var allHands = input.Lines.Select(line => new CamelHand(line)).ToList();
+        var allHands = input.Lines.Select(line => new CamelHand(line));
 
-        var maxRank = allHands.Count;
-        long sumOfWinnings = 0;
-        
+        var maxRank = input.Lines.Count;
 
         var sortedHandsInGroups = allHands
             .GroupBy(h => h.DetermineGroupForPartOne())
             .OrderBy(group => group.Key);
 
+        var sumOfWinnings = 0L;
         foreach (var handsInGroup in sortedHandsInGroups)
         {
             foreach (var hand in handsInGroup.OrderBy(c => c))
@@ -25,17 +23,16 @@ public class CamelCards
                 maxRank -= 1;
             }
         }
-
+        
         return sumOfWinnings;
     }
     
     public static long SolvePartTwo(PuzzleInput input)
     {
-        var allHands = input.Lines.Select(line => new CamelHand(line, partOne: false));
+        var allHands = input.Lines.Select(line => new CamelHand(line, isPartOne: false));
 
         var maxRank = input.Lines.Count;
-        long sumOfWinnings = 0;
-        
+        var sumOfWinnings = 0L;
 
         var sortedHandsInGroups = allHands
             .GroupBy(h => h.DetermineGroupForPartTwo())
@@ -50,38 +47,34 @@ public class CamelCards
             }
         }
 
+        // Alternative: No impact on performance. Not readable though..
+        // return sortedHandsInGroups.Sum(g => g.OrderBy(c => c).Aggregate(0L, (current, hand) => current + hand.GetWinnings(maxRank--)));
         return sumOfWinnings;
     }
 
 
-
-    internal class CamelHand : IComparable<CamelHand>
+    private readonly record struct CamelHand : IComparable<CamelHand>
     {
-        public string OriginalFormat;
+        private readonly List<CamelCard> _cards;
 
-        private List<CamelCard> cards;
+        private readonly int _handValue;
 
-        private int HandValue;
-
-        private int rankInDeck;
-        
-        public CamelHand(string lineWithHand, bool partOne = true)
+        public CamelHand(string lineWithHand, bool isPartOne = true)
         {
-            OriginalFormat = lineWithHand;
             var splitLine = lineWithHand.Split(" ");
-            HandValue = int.Parse(splitLine[1]);
-            cards = splitLine[0].Select(c => new CamelCard(c, partOne)).ToList();
+            _handValue = int.Parse(splitLine[1]);
+            _cards = splitLine[0].Select(c => new CamelCard(c, isPartOne)).ToList();
         }
         
         public CardGroup DetermineGroupForPartOne()
         {
             var threeOfAKindValue = 0;
             var twoOfAKindValue = 0;
-            
-            foreach (var current in cards)
+
+            foreach (var currentCard in _cards)
             {
-                var current1 = current;
-                var matching = cards.Count(c => current1.CompareToCard(c) == 0);
+                var current = currentCard;
+                var matching = _cards.Count(c => current.CompareToCard(c) == 0);
 
                 if (threeOfAKindValue == current.CardValue ||
                     twoOfAKindValue == current.CardValue)
@@ -90,48 +83,46 @@ public class CamelCards
                     continue;
                 }
 
-                switch (matching)
-                {
+                if (matching == 5)
                     // Check types: 5 of a kind
-                    case 5:
-                        return CardGroup.FiveOfAKind;
-                    // 4 of a kind
-                    case 4:
-                        return CardGroup.FourOfAKind;
-                    // 3 of a kind found
-                    case 3 when twoOfAKindValue != 0:
-                        return CardGroup.FullHouse;
-                    // pair
-                    case 3 when threeOfAKindValue == 0:
-                        threeOfAKindValue = current.CardValue;
-                        break;
-                    case 2 when threeOfAKindValue != 0:
-                        return CardGroup.FullHouse;
-                    case 2 when twoOfAKindValue == 0:
-                        twoOfAKindValue = current.CardValue;
-                        break;
-                    case 2:
-                        // two pair found
-                        return CardGroup.TwoPair;
-                }
+                    return CardGroup.FiveOfAKind;
+                // 4 of a kind
+                if (matching == 4)
+                    return CardGroup.FourOfAKind;
+                // 3 of a kind found
+                if (matching == 3 && twoOfAKindValue != 0)
+                    return CardGroup.FullHouse;
+                // pair
+                if (matching == 3 && threeOfAKindValue == 0)
+                    threeOfAKindValue = current.CardValue;
+                else if (matching == 2 && threeOfAKindValue != 0)
+                    return CardGroup.FullHouse;
+                else if (matching == 2 && twoOfAKindValue == 0)
+                    twoOfAKindValue = current.CardValue;
+                else if (matching == 2)
+                    // two pair found
+                    return CardGroup.TwoPair;
             }
 
             // Administration: If a single pair has been found, if a three of a kind, full house
-            return threeOfAKindValue != 0 ? CardGroup.ThreeOfAKind :
-                twoOfAKindValue != 0 ? CardGroup.OnePair :
-                CardGroup.HighCard;
+            if (threeOfAKindValue != 0)
+                return CardGroup.ThreeOfAKind; 
+            if (twoOfAKindValue != 0)
+                return CardGroup.OnePair;
+            
+            return CardGroup.HighCard;
         }
 
         public CardGroup DetermineGroupForPartTwo()
         {
             var threeOfAKindValue = 0;
             var twoOfAKindValue = 0;
-            var countOfJokers = cards.Count(c => c.CardValue == 0);
+            var countOfJokers = _cards.Count(c => c.CardValue == 0);
             var jokerUsed = false;
-            foreach (var current in cards)
+            foreach (var current in _cards)
             {
                 var current1 = current;
-                var matching = cards.Count(c => current1.CompareToCard(c) == 0);
+                var matching = _cards.Count(c => current1.CompareToCard(c) == 0);
                 if (current.CardValue == 0)
                 {
                     continue;
@@ -208,18 +199,12 @@ public class CamelCards
             };
         }
         
-        public long GetWinnings(int rank)
-        {
-            return rank * HandValue;
-        }
+        public long GetWinnings(int rank) => rank * _handValue;
 
-        public int CompareTo(CamelHand other)
-        {
-            return cards.Select((t, i) => t.CompareToCard(other.cards[i])).FirstOrDefault(comp => comp != 0);
-        }
+        int IComparable<CamelHand>.CompareTo(CamelHand other) => _cards.Select((t, i) => t.CompareToCard(other._cards.ElementAt(i))).FirstOrDefault(comp => comp != 0);
     }
 
-    internal enum CardGroup
+    private enum CardGroup
     {
         FiveOfAKind = 1,
         FourOfAKind = 2,
@@ -229,32 +214,23 @@ public class CamelCards
         OnePair = 6,
         HighCard = 7
     }
-    
-    internal class CamelCard
+
+    private readonly record struct CamelCard
     {
-        public string OriginalCardCharacter;
         public readonly int CardValue;
         
-        public CamelCard(char original, bool partOne = true)
-        {
-            OriginalCardCharacter = original.ToString();
-            if (char.IsDigit(original))
-            {
-                CardValue = int.Parse(original.ToString());
-            }
-            else
-            {
-                CardValue = original switch
+        public CamelCard(char original, bool isPartOne = true) =>
+            CardValue = char.IsDigit(original)
+                ? int.Parse(original.ToString())
+                : original switch
                 {
                     'T' => 10,
-                    'J' => partOne? 11 : 0,
+                    'J' => isPartOne ? 11 : 0,
                     'Q' => 12,
                     'K' => 13,
                     'A' => 14,
                     _ => throw new ArgumentException($"Not recognized as card: {original}")
                 };
-            }
-        }
 
         public int CompareToCard(CamelCard other)
         {
