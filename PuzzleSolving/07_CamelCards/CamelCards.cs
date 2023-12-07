@@ -19,7 +19,7 @@ public class CamelCards
 
         foreach (var handsInGroup in sortedHandsInGroups)
         {
-            foreach (var hand in handsInGroup.OrderBy(c => c, new HandComparer()))
+            foreach (var hand in handsInGroup.OrderBy(c => c))
             {
                 sumOfWinnings += hand.GetWinnings(maxRank);
                 maxRank -= 1;
@@ -31,9 +31,9 @@ public class CamelCards
     
     public static long SolvePartTwo(PuzzleInput input)
     {
-        var allHands = input.Lines.Select(line => new CamelHand(line, partOne: false)).ToList();
+        var allHands = input.Lines.Select(line => new CamelHand(line, partOne: false));
 
-        var maxRank = allHands.Count;
+        var maxRank = input.Lines.Count;
         long sumOfWinnings = 0;
         
 
@@ -43,7 +43,7 @@ public class CamelCards
 
         foreach (var handsInGroup in sortedHandsInGroups)
         {
-            foreach (var hand in handsInGroup.OrderBy(c => c, new HandComparer()))
+            foreach (var hand in handsInGroup.OrderBy(c => c))
             {
                 sumOfWinnings += hand.GetWinnings(maxRank);
                 maxRank -= 1;
@@ -53,19 +53,9 @@ public class CamelCards
         return sumOfWinnings;
     }
 
-    internal class HandComparer : IComparer<CamelHand>
-    {
-        public int Compare(CamelHand x, CamelHand y)
-        {
-            if (null == x || null == y)
-            {
-                throw new AggregateException($"Comparer: Got null value");
-            }
-            return x.CompareToHand(y);
-        }
-    }
 
-    internal class CamelHand
+
+    internal class CamelHand : IComparable<CamelHand>
     {
         public string OriginalFormat;
 
@@ -223,7 +213,7 @@ public class CamelCards
             return rank * HandValue;
         }
 
-        public int CompareToHand(CamelHand other)
+        public int CompareTo(CamelHand other)
         {
             return cards.Select((t, i) => t.CompareToCard(other.cards[i])).FirstOrDefault(comp => comp != 0);
         }
