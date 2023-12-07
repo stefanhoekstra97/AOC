@@ -38,10 +38,32 @@ public static class BoatGame
         return (time + 1) - (2 * minTimeToBeat);
     }
 
+    
+    public static long SolvePartOneBSearch(PuzzleInput input)
+    {
+        var timesInMs = input.Lines[0]
+            .Split(" ", StringSplitOptions.TrimEntries)[1..]
+            .Where(s => !string.IsNullOrWhiteSpace(s))
+            .Select(int.Parse).ToArray();
+
+        var distancesInMm = input.Lines[1]
+            .Split(" ", StringSplitOptions.TrimEntries)[1..]
+            .Where(s => !string.IsNullOrWhiteSpace(s))
+            .Select(int.Parse).ToArray();
+
+        return timesInMs.Select((t, i) => GetNumberOfPossibleWinsBsearch(t, distancesInMm[i]))
+            .Aggregate(1L, (current, resultForSet) => current * resultForSet);
+    }
     private static long GetNumberOfPossibleWins(long timeAvailable, long distanceToBeat)
     {
         var minButtonTime = GetMinTimeToPushButton(timeAvailable, distanceToBeat);
         return (timeAvailable + 1) - (2 * minButtonTime);
+    }
+
+    private static long GetNumberOfPossibleWinsBsearch(long timeAvailable, long distanceToBeat)
+    {
+        var minTimeToBeat = GetMinTimeBinarySearch(timeAvailable, distanceToBeat, null, null) ?? throw new ArgumentException("no value found");
+        return (timeAvailable + 1) - (2 * minTimeToBeat);
     }
 
     private static long GetMinTimeToPushButton(long timeAvailable, long distanceToBeat)

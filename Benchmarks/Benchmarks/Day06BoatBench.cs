@@ -22,6 +22,12 @@ public class Day06BoatBench
     }
     
     [Benchmark]
+    public void BoatGamePartOneBSearch()
+    {
+        BoatGame.SolvePartOneBSearch(_input);
+    }
+    
+    [Benchmark]
     public void BoatGamePartTwo()
     {
         BoatGame.SolvePartTwo(_input);
