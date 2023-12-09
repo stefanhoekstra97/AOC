@@ -215,22 +215,19 @@ public static class CamelCards
         HighCard = 7
     }
 
-    private readonly record struct CamelCard
+    private readonly struct CamelCard(char original, bool isPartOne = true)
     {
-        public readonly int CardValue;
-        
-        public CamelCard(char original, bool isPartOne = true) =>
-            CardValue = char.IsDigit(original)
-                ? int.Parse(original.ToString())
-                : original switch
-                {
-                    'T' => 10,
-                    'J' => isPartOne ? 11 : 0,
-                    'Q' => 12,
-                    'K' => 13,
-                    'A' => 14,
-                    _ => throw new ArgumentException($"Not recognized as card: {original}")
-                };
+        public readonly int CardValue = char.IsDigit(original)
+            ? int.Parse(original.ToString())
+            : original switch
+            {
+                'T' => 10,
+                'J' => isPartOne ? 11 : 0,
+                'Q' => 12,
+                'K' => 13,
+                'A' => 14,
+                _ => throw new ArgumentException($"Not recognized as card: {original}")
+            };
 
         public int CompareToCard(CamelCard other)
         {
