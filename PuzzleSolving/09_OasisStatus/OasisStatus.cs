@@ -18,12 +18,12 @@ public static class OasisStatus
         return sequences.Sum(seq => PredictNextStatus(seq, seq.Last()));
     }
 
-    private static List<List<long>> ExtractSequences(PuzzleInput input)
+    private static IEnumerable<List<long>> ExtractSequences(PuzzleInput input)
     {
-        return input.Lines.Select(line => line.Split(" ").Select(long.Parse).ToList()).ToList();
+        return input.Lines.Select(line => line.Split(" ").Select(long.Parse).ToList());
     }
 
-    private static List<List<long>> ExtractSequencesReversed(PuzzleInput input)
+    private static IEnumerable<List<long>> ExtractSequencesReversed(PuzzleInput input)
     {
         var sequences = input.Lines.Select(line => line.Split(" ").Select(long.Parse).ToList()).ToList();
         sequences.ForEach(seq => seq.Reverse());
