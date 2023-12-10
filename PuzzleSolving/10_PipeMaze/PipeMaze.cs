@@ -1,4 +1,3 @@
-using System.Text;
 using Infrastructure.Entities;
 
 namespace PuzzleSolving._10_PipeMaze;
@@ -67,18 +66,18 @@ internal class Maze
                 var current = _tiles[posY, posX].OriginalChar;
                 var isInPath = fullPath.Any(tile => tile.Location.Y == posY && tile.Location.X == posX);
                 
-                if (current.Equals('.'))
+                if (!isInPath)
                 {
                     area += crossings % 2;
                     continue;
                 }
-                if ("|".Contains(current) && isInPath)
+                if ("|".Contains(current))
                 {
                     crossings += 1;
                     continue;
                 }
 
-                if ("F".Contains(current) && isInPath)
+                if ("F".Contains(current))
                 {
                     foundF = true;
                     // We can do crossings + 2 here but unnecessary as mod 2
@@ -86,7 +85,7 @@ internal class Maze
 
                 }
 
-                if ("J".Contains(current) && isInPath)
+                if ("J".Contains(current))
                 {
                     if (foundF)
                     {
@@ -96,7 +95,7 @@ internal class Maze
                     }
                 }
 
-                if ("7".Contains(current) && isInPath)
+                if ("7".Contains(current))
                 {
                     if (foundF)
                     {
@@ -105,12 +104,6 @@ internal class Maze
                         continue;
                     }
                     crossings += 1;
-                    continue;
-                }
-
-                if (!isInPath)
-                {
-                    area += crossings % 2;
                 }
             }   
         }
@@ -185,10 +178,10 @@ internal class Maze
     }
 }
 
-internal readonly struct Tile(char originalChar, Point2D location)
+internal readonly record struct Tile(char OriginalChar, Point2D Location)
 {
-    public readonly char OriginalChar = originalChar;
-    public readonly Point2D Location = location;
+    public readonly char OriginalChar = OriginalChar;
+    public readonly Point2D Location = Location;
 
     public static readonly Dictionary<char, List<Point2D>> MoveOffsets = new()
     {

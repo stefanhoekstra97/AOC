@@ -8,22 +8,16 @@ public static class Day10Runner
     public static async Task RunSample()
     {
         var input = await ReadFile.ReadFromDisk("sample_input", 10);
-        var solver = new PipeMaze();
-
-        // var result = solver.SolvePartOne(input);
-        // Console.WriteLine($"Puzzle sample: {result}");
-        //
-        // Console.WriteLine("\n\n Second sample start: \n");
-        // var input2 = await ReadFile.ReadFromDisk("second_sample_input", 10);
-        //
-        // var result2 = solver.SolvePartOne(input2);
-        // Console.WriteLine($"Second puzzle sample: {result2}");
+        var result = PipeMaze.SolvePartOne(input);
+        Console.WriteLine($"Puzzle sample: {result}");
+        
+        var input2 = await ReadFile.ReadFromDisk("second_sample_input", 10);
+        var result2 = PipeMaze.SolvePartOne(input2);
+        Console.WriteLine($"Second puzzle sample: {result2}");
     }
 
     public static async Task RunSamplesPartTwo()
     {
-        var solver = new PipeMaze();
-        
         var input1 = await ReadFile.ReadFromDisk("sample_input", 10);
         var result1 = PipeMaze.SolvePartTwo(input1);
         Console.WriteLine($"Sample one: {result1}");
@@ -48,7 +42,6 @@ public static class Day10Runner
     public static async Task RunPuzzlePartOne()
     {
         var input = await ReadFile.ReadFromDisk("puzzle_input", 10);
-        var solver = new PipeMaze();
 
         var result = PipeMaze.SolvePartOne(input);
         Console.WriteLine($"Puzzle part one: {result}");
@@ -57,7 +50,6 @@ public static class Day10Runner
     public static async Task RunPuzzlePartTwo()
     {
         var input = await ReadFile.ReadFromDisk("puzzle_input", 10);
-        var solver = new PipeMaze();
 
         var result = PipeMaze.SolvePartTwo(input);
         Console.WriteLine($"Puzzle part two: {result}");
