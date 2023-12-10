@@ -224,8 +224,6 @@ internal readonly struct Point2D(int y, int x)
     public readonly int Y = y;
     public readonly int X = x;
 
-    public static Point2D operator -(Point2D a) => a;
     public static Point2D operator -(Point2D a, Point2D b) => new(a.Y - b.Y, a.X - b.X);
-    public static Point2D operator +(Point2D a) => a;
     public static Point2D operator +(Point2D a, Point2D b) => new(a.Y + b.Y, a.X + b.X);
 };
