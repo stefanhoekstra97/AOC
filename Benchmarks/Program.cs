@@ -9,4 +9,5 @@ using Benchmarks.Benchmarks;
 // var summary = BenchmarkRunner.Run(typeof(Day03EngineBench));
 // var summary = BenchmarkRunner.Run(typeof(Day04ScratchCardsBench));
 // var summary = BenchmarkRunner.Run(typeof(Day07CamelCardBench));
-var summary = BenchmarkRunner.Run(typeof(Day08HauntedDesertBench));
+// var summary = BenchmarkRunner.Run(typeof(Day08HauntedDesertBench));
+var summary = BenchmarkRunner.Run(typeof(Day09OasisStatusBench));
