@@ -25,6 +25,11 @@ using ConsoleHost.TestPuzzle;
 // await Day09Runner.RunPuzzlePartOne();
 // await Day09Runner.RunPuzzlePartTwo();
 
-await Day10Runner.RunSamplesPartTwo();
+// await Day10Runner.RunSamplesPartTwo();
 // await Day10Runner.RunPuzzlePartOne();
-await Day10Runner.RunPuzzlePartTwo();
+// await Day10Runner.RunPuzzlePartTwo();
+
+
+await Day11Runner.RunSamples();
+await Day11Runner.RunPuzzlePartOne();
+await Day11Runner.RunPuzzlePartTwo();
