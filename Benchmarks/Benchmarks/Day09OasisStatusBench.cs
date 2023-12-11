@@ -19,13 +19,11 @@ public class Day09OasisStatusBench
     public void OasisStatusPartOne()
     {
         var r = OasisStatus.SolvePartOne(_input);
-        r += 1;
     }
 
     [Benchmark]
     public void OasisStatusPartTwo()
     {
         var r = OasisStatus.SolvePartTwo(_input);
-        r += 1;
     }
 }
