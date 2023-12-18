@@ -11,7 +11,6 @@
     </Content>
 </ItemGroup>
 <ItemGroup>
-  <Folder Include="Resources\14\" />
   <Folder Include="Resources\15\" />
   <Folder Include="Resources\16\" />
   <Folder Include="Resources\17\" />
