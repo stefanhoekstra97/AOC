@@ -51,5 +51,5 @@
 // await Day16Runner.RunPuzzlePartTwo();
 
 await Day17Runner.RunSample();
-await Day17Runner.RunPuzzlePartOne();
-// await Day17Runner.RunPuzzlePartTwo();
+// await Day17Runner.RunPuzzlePartOne();
+await Day17Runner.RunPuzzlePartTwo();

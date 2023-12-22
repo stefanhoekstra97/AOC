@@ -1,4 +1,3 @@
-using System.Text;
 using Infrastructure.Entities;
 using Infrastructure.enums;
 
@@ -10,25 +9,24 @@ public class LavaCityGrid : Grid2DBase
 
     public LavaCityGrid(PuzzleInput input)
     {
-        gridItems = [];
+        GridItems = [];
         VisitedMemory = [];
         for (var y = 0; y < input.Lines.Count; y++)
         {
             VisitedMemory.Add([]);
-            gridItems.Add([]);
+            GridItems.Add([]);
             var row = input.Lines[y];
             for (var x = 0; x < row.Length; x++)
             {
                 var heatLoss = int.Parse(row[x].ToString());
-                gridItems.Last().Add(new Point2D(y, x, heatLoss));
-                VisitedMemory.Last().Add(new ShadowTile(){LowestCost = int.MaxValue});
+                GridItems.Last().Add(new Point2D(y, x, heatLoss));
+                VisitedMemory.Last().Add(new ShadowTile() { LowestCost = int.MaxValue });
             }
         }
     }
 
-    public long FindShortestPath(Point2D start, Point2D target)
+    public long FindShortestPathSmallCrucible(Point2D start, Point2D target)
     {
-        var averageVal = gridItems.Average(s => s.Average(tile => tile.Value));
         var initialPath = new TraversalPath
         {
             CurrentPosition = start,
@@ -49,10 +47,6 @@ public class LavaCityGrid : Grid2DBase
             if (currentPath.CurrentPosition.ManhattanDistanceTo(target) == 0)
             {
                 Console.WriteLine($"{currentPath.NumNodesInPath} nodes visited in this path");
-                foreach (var direction in currentPath.PathsTaken)
-                {
-                    Console.WriteLine(Enum.GetName(typeof(CardinalDirections), direction));
-                }
                 return currentPath.TotalCumulativeCost;
             }
 
@@ -78,8 +72,8 @@ public class LavaCityGrid : Grid2DBase
 
                 if (newNode.X < 0
                     || newNode.Y < 0
-                    || newNode.X >= gridItems.First().Count
-                    || newNode.Y >= gridItems.Count)
+                    || newNode.X >= GridItems.First().Count
+                    || newNode.Y >= GridItems.Count)
                 {
                     continue;
                 }
@@ -136,9 +130,9 @@ public class LavaCityGrid : Grid2DBase
 
                 // Continue to next item in queue if we already had visited the node, and its cost is lower.
                 if (VisitedMemory[newNode.Y][newNode.X].LowestCost <=
-                    currentPath.TotalCumulativeCost + gridItems[newNode.Y][newNode.X].Value
-                     && VisitedMemory[newNode.Y][newNode.X].Historic.Contains((kv.Key, numConsecutiveDirs)))
-                    
+                    currentPath.TotalCumulativeCost + GridItems[newNode.Y][newNode.X].Value
+                    && VisitedMemory[newNode.Y][newNode.X].Historic.Contains((kv.Key, numConsecutiveDirs)))
+
                 {
                     continue;
                 }
@@ -147,16 +141,15 @@ public class LavaCityGrid : Grid2DBase
                 {
                     CurrentPosition = newNode,
                     HeuristicValue = HeuristicFunc(newNode),
-                    TotalCumulativeCost = currentPath.TotalCumulativeCost + gridItems[newNode.Y][newNode.X].Value,
+                    TotalCumulativeCost = currentPath.TotalCumulativeCost + GridItems[newNode.Y][newNode.X].Value,
                     NumConsecutiveEast = newConsecutiveEast,
                     NumConsecutiveWest = newConsecutiveWest,
                     NumConsecutiveSouth = newConsecutiveSouth,
                     NumConsecutiveNorth = newConsecutiveNorth,
                     LastDirection = kv.Key,
-                    NumNodesInPath = currentPath.NumNodesInPath + 1,
-                    PathsTaken = currentPath.PathsTaken.Append(kv.Key).ToList()
+                    NumNodesInPath = currentPath.NumNodesInPath + 1
                 };
-                
+
                 VisitedMemory[newNode.Y][newNode.X].LowestCost = newPath.TotalCumulativeCost;
                 VisitedMemory[newNode.Y][newNode.X].Historic.Add((kv.Key, numConsecutiveDirs));
                 discoveryPathQueue.Enqueue(newPath, newPath.CombinedHeuristicCost);
@@ -166,17 +159,105 @@ public class LavaCityGrid : Grid2DBase
         return 0L;
 
         // Heuristic: manhattan distance. Heuristic is optimistic - each cell has value >= 1 - and thus admissible.
-        // double HeuristicFunc(Point2D current) => current.ManhattanDistanceTo(target);
-        // double HeuristicFunc(Point2D current) => current.ManhattanDistanceTo(target) * (averageVal - 3);
-        double HeuristicFunc(Point2D current) => current.ManhattanDistanceTo(target) * 0.5;
-        // double HeuristicFunc(Point2D current) => current.ManhattanDistanceTo(target);
+        double HeuristicFunc(Point2D current) => current.ManhattanDistanceTo(target);
+    }
+    
+    public long FindShortestPathUltraCrucible(Point2D start, Point2D target)
+    {
+        var initialPath = new TraversalPath
+        {
+            CurrentPosition = start,
+            HeuristicValue = HeuristicFunc(start)
+        };
 
+        var discoveryPathQueue = new PriorityQueue<TraversalPath, double>();
+        discoveryPathQueue.Enqueue(initialPath, initialPath.CombinedHeuristicCost);
+
+        // Loop over possible next paths to check
+        // Check each current combined cost (heuristic plus incurred by heat loss)
+        //-> Handled by the priority queue, ordered by Heuristic value
+
+        while (discoveryPathQueue.Count > 0)
+        {
+            var currentPath = discoveryPathQueue.Dequeue();
+
+            if (currentPath.CurrentPosition.ManhattanDistanceTo(target) == 0)
+            {
+                Console.WriteLine($"{currentPath.NumNodesInPath} nodes visited in this path");
+                return currentPath.TotalCumulativeCost;
+            }
+
+
+            // Determine possible next steps
+            // Do take other direction than last direction taken -> when horizontal, only vertical, and vice versa.
+            // Ensure no more than 10 tiles and no less than 4 tiles are moved 
+            foreach (var kv in DirectionMapper.DirectionalOffset)
+            {
+
+                // Check constraint: Last four moves are not allowed to be taken in the same direction
+                if ( ((kv.Key & CardinalDirections.Horizontal) != 0 && (currentPath.LastDirection & CardinalDirections.Horizontal) != 0)
+                    || ((kv.Key & CardinalDirections.Vertical) != 0 && (currentPath.LastDirection & CardinalDirections.Vertical) != 0))
+                {
+                    continue;
+                }
+
+                if (currentPath.CurrentPosition.X < 0
+                    || currentPath.CurrentPosition.Y < 0
+                    || currentPath.CurrentPosition.X >= GridItems.First().Count
+                    || currentPath.CurrentPosition.Y >= GridItems.Count)
+                {
+                    continue;
+                }
+
+                for (var len = 4; len <= 9; len++)
+                {
+                    // Enqueue next possibilities - Ensure next possibilities are possible!
+                    var newNode = currentPath.CurrentPosition + (kv.Value * len);
+                    
+                    if (newNode.X < 0
+                        || newNode.Y < 0
+                        || newNode.X >= GridItems.First().Count
+                        || newNode.Y >= GridItems.Count)
+                    {
+                        continue;
+                    }
+
+                    var incurredCost = (kv.Key) switch
+                    {
+                        CardinalDirections.East => GridItems[currentPath.CurrentPosition.Y][(currentPath.CurrentPosition.X + 1) .. (newNode.X+1)].Sum(p => p.Value),
+                        CardinalDirections.South => GridItems[(currentPath.CurrentPosition.Y + 1) .. (newNode.Y+1)].Sum(row => row[newNode.X].Value),
+                        CardinalDirections.North => GridItems[(newNode.Y).. (currentPath.CurrentPosition.Y - 1)].Sum(row => row[newNode.X].Value),
+                        CardinalDirections.West => GridItems[currentPath.CurrentPosition.Y][(newNode.X) .. (currentPath.CurrentPosition.X - 1)].Sum(p => p.Value),
+                        _ => throw new ArgumentException("Cannot happen")
+                    };
+
+                    if (VisitedMemory[newNode.Y][newNode.X].Historic.Contains((kv.Key, len))) continue;
+                    
+                    VisitedMemory[newNode.Y][newNode.X].LowestCost = currentPath.TotalCumulativeCost + incurredCost;
+                    VisitedMemory[newNode.Y][newNode.X].Historic.Add((kv.Key, len));
+                    var newPath = new TraversalPath
+                    {
+                        CurrentPosition = newNode,
+                        HeuristicValue = HeuristicFunc(newNode),
+                        TotalCumulativeCost = currentPath.TotalCumulativeCost + incurredCost,
+                        LastDirection = kv.Key,
+                        NumNodesInPath = currentPath.NumNodesInPath + 1,
+                        
+                    };
+                    discoveryPathQueue.Enqueue(newPath, newPath.CombinedHeuristicCost);
+                }
+            }
+        }
+
+        return 0L;
+
+        // Heuristic: manhattan distance. Heuristic is optimistic - each cell has value >= 1 - and thus admissible.
+        double HeuristicFunc(Point2D current) => current.ManhattanDistanceTo(target);
     }
 }
 
 internal record struct TraversalPath
 {
-    public List<CardinalDirections> PathsTaken = [];
     public Point2D CurrentPosition = default;
     public int TotalCumulativeCost = 0;
     public double HeuristicValue = 0;
@@ -197,5 +278,5 @@ internal record struct TraversalPath
 internal class ShadowTile
 {
     public int LowestCost = default;
-    public List<(CardinalDirections enteredFrom, int consecutiveDirections)> Historic = [];
+    public readonly List<(CardinalDirections enteredFrom, int consecutiveDirections)> Historic = [];
 }

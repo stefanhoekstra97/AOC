@@ -8,12 +8,17 @@ public class ClumsyCrucible
     {
         var grid = new LavaCityGrid(input);
         // Console.WriteLine(grid);
-        Console.WriteLine(grid.FindShortestPath(grid.gridItems.First().First(), grid.gridItems.Last().Last()));
+        Console.WriteLine(
+            grid.FindShortestPathSmallCrucible(grid.GridItems.First().First(), grid.GridItems.Last().Last()));
         return 0L;
     }
-    
+
     public static long SolvePartTwo(PuzzleInput input)
     {
+        var grid = new LavaCityGrid(input);
+
+        Console.WriteLine(
+            grid.FindShortestPathUltraCrucible(grid.GridItems.First().First(), grid.GridItems.Last().Last()));
         return 0L;
     }
 }

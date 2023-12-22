@@ -10,9 +10,9 @@ public static class Day17Runner
     {
         var input = await ReadFile.ReadFromDisk("sample_input", 17);
         
-        var result = ClumsyCrucible.SolvePartOne(input);
-        Console.WriteLine($"Sample part one: {result}");
-        
+        // var result = ClumsyCrucible.SolvePartOne(input);
+        // Console.WriteLine($"Sample part one: {result}");
+        //
         var result2 = ClumsyCrucible.SolvePartTwo(input);
         Console.WriteLine($"Sample part two: {result2}");
     }
