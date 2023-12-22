@@ -1,12 +1,12 @@
 namespace Infrastructure.Entities;
 
-public readonly struct Point2D(int y, int x)
+public readonly struct Point2D(int y, int x, int value = 0)
 {
     public readonly int Y = y;
     public readonly int X = x;
-
-    public static Point2D operator -(Point2D a, Point2D b) => new(a.Y - b.Y, a.X - b.X);
-    public static Point2D operator +(Point2D a, Point2D b) => new(a.Y + b.Y, a.X + b.X);
+    public readonly int Value = value;
+    public static Point2D operator -(Point2D a, Point2D b) => new(a.Y - b.Y, a.X - b.X,a.Value - b.Value);
+    public static Point2D operator +(Point2D a, Point2D b) => new(a.Y + b.Y, a.X + b.X, a.Value + b.Value);
 
     public long ManhattanDistanceTo(Point2D other)
     {
@@ -15,9 +15,14 @@ public readonly struct Point2D(int y, int x)
         
         return xDistance + yDistance;
     }
-
+    
     public override string ToString()
     {
+        if (Value != 0)
+        {
+            return Value.ToString();
+        }
+        
         return $"(X: {X}, Y: {Y})";
     }
 };

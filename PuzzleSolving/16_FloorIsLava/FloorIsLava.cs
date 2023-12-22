@@ -1,5 +1,6 @@
 using System.Text;
 using Infrastructure.Entities;
+using Infrastructure.enums;
 
 namespace PuzzleSolving._16_FloorIsLava;
 
@@ -263,44 +264,5 @@ internal class LavaFloor
         }
 
         Console.WriteLine(sb.ToString());
-    }
-}
-
-[Flags]
-internal enum CardinalDirections
-{
-    North = 1,
-    East = 2,
-    South = 4,
-    West = 8,
-    Horizontal = East | West,
-    Vertical = North | South,
-}
-
-internal enum FloorTileType
-{
-    Empty,
-    HorizontalMirror,
-    VerticalMirror,
-    ForwardSlashMirror,
-    BackSlashMirror,
-}
-
-internal class FloorTile(FloorTileType type)
-{
-    public readonly FloorTileType Type = type;
-    public bool TileIsLit = false;
-    public bool TileLitFromNorth = false;
-    public bool TileLitFromEast = false;
-    public bool TileLitFromSouth = false;
-    public bool TileLitFromWest = false;
-
-    public void ResetTile()
-    {
-        TileIsLit = false;
-        TileLitFromEast = false;
-        TileLitFromNorth = false;
-        TileLitFromSouth = false;
-        TileLitFromWest = false;
     }
 }

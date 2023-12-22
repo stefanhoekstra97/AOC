@@ -1,17 +1,14 @@
-﻿using ConsoleHost;
-using ConsoleHost.PuzzleRunners;
-using ConsoleHost.TestPuzzle;
-
+﻿using ConsoleHost.PuzzleRunners;
 
 // await Day03Runner.TestSecond();
 // await Day04Runner.RunSampleInputPartTwo();
 
 // await Day05Runner.RunSamplePartTwo();
 // await Day05Runner.RunPuzzlePartTwo();
+
 // await Day06Runner.RunPuzzleOne();
 // await Day06Runner.RunPuzzleTwo();
 // await Day06Runner.RunPuzzleTwoBSearch();
-
 
 // await Day07Runner.RunPuzzlePartOne();
 // await Day07Runner.RunPuzzlePartTwo();
@@ -29,12 +26,9 @@ using ConsoleHost.TestPuzzle;
 // await Day10Runner.RunPuzzlePartOne();
 // await Day10Runner.RunPuzzlePartTwo();
 
-
 // await Day11Runner.RunSamples();
 // await Day11Runner.RunPuzzlePartOne();
 // await Day11Runner.RunPuzzlePartTwo();
-
-
 
 // await Day12Runner.RunSample();
 // await Day12Runner.RunPuzzlePartOne();
@@ -52,6 +46,10 @@ using ConsoleHost.TestPuzzle;
 // await Day15Runner.RunPuzzlePartOne();
 // await Day15Runner.RunPuzzlePartTwo();
 
-await Day16Runner.RunSample();
-await Day16Runner.RunPuzzlePartOne();
-await Day16Runner.RunPuzzlePartTwo();
+// await Day16Runner.RunSample();
+// await Day16Runner.RunPuzzlePartOne();
+// await Day16Runner.RunPuzzlePartTwo();
+
+await Day17Runner.RunSample();
+await Day17Runner.RunPuzzlePartOne();
+// await Day17Runner.RunPuzzlePartTwo();
