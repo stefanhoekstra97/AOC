@@ -10,7 +10,4 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
 </ItemGroup>
-<ItemGroup>
-  <Folder Include="Resources\18\" />
-</ItemGroup>
 </Project>

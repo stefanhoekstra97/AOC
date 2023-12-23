@@ -30,7 +30,7 @@ public class LavaCityGrid : Grid2DBase
         var initialPath = new TraversalPath
         {
             CurrentPosition = start,
-            HeuristicValue = HeuristicFunc(start)
+            HeuristicValue = HeuristicFunc(start, target)
         };
 
         var discoveryPathQueue = new PriorityQueue<TraversalPath, double>();
@@ -46,7 +46,7 @@ public class LavaCityGrid : Grid2DBase
 
             if (currentPath.CurrentPosition.ManhattanDistanceTo(target) == 0)
             {
-                Console.WriteLine($"{currentPath.NumNodesInPath} nodes visited in this path");
+                // Console.WriteLine($"{currentPath.NumNodesInPath} nodes visited in this path");
                 return currentPath.TotalCumulativeCost;
             }
 
@@ -140,7 +140,7 @@ public class LavaCityGrid : Grid2DBase
                 var newPath = new TraversalPath
                 {
                     CurrentPosition = newNode,
-                    HeuristicValue = HeuristicFunc(newNode),
+                    HeuristicValue = HeuristicFunc(newNode, target),
                     TotalCumulativeCost = currentPath.TotalCumulativeCost + GridItems[newNode.Y][newNode.X].Value,
                     NumConsecutiveEast = newConsecutiveEast,
                     NumConsecutiveWest = newConsecutiveWest,
@@ -157,17 +157,16 @@ public class LavaCityGrid : Grid2DBase
         }
 
         return 0L;
-
-        // Heuristic: manhattan distance. Heuristic is optimistic - each cell has value >= 1 - and thus admissible.
-        double HeuristicFunc(Point2D current) => current.ManhattanDistanceTo(target);
     }
-    
+
+
+
     public long FindShortestPathUltraCrucible(Point2D start, Point2D target)
     {
         var initialPath = new TraversalPath
         {
             CurrentPosition = start,
-            HeuristicValue = HeuristicFunc(start)
+            HeuristicValue = HeuristicFunc(start, target)
         };
 
         var discoveryPathQueue = new PriorityQueue<TraversalPath, double>();
@@ -183,7 +182,7 @@ public class LavaCityGrid : Grid2DBase
 
             if (currentPath.CurrentPosition.ManhattanDistanceTo(target) == 0)
             {
-                Console.WriteLine($"{currentPath.NumNodesInPath} nodes visited in this path");
+                // Console.WriteLine($"{currentPath.NumNodesInPath} nodes visited in this path");
                 return currentPath.TotalCumulativeCost;
             }
 
@@ -238,7 +237,7 @@ public class LavaCityGrid : Grid2DBase
                     var newPath = new TraversalPath
                     {
                         CurrentPosition = newNode,
-                        HeuristicValue = HeuristicFunc(newNode),
+                        HeuristicValue = HeuristicFunc(newNode, target),
                         TotalCumulativeCost = currentPath.TotalCumulativeCost + incurredCost,
                         LastDirection = kv.Key,
                         NumNodesInPath = currentPath.NumNodesInPath + 1,
@@ -250,10 +249,9 @@ public class LavaCityGrid : Grid2DBase
         }
 
         return 0L;
-
-        // Heuristic: manhattan distance. Heuristic is optimistic - each cell has value >= 1 - and thus admissible.
-        double HeuristicFunc(Point2D current) => current.ManhattanDistanceTo(target);
     }
+    // Heuristic: manhattan distance. Heuristic is optimistic - each cell has value >= 1 - and thus admissible.
+    private static double HeuristicFunc(Point2D current, Point2D target) => current.ManhattanDistanceTo(target);
 }
 
 internal record struct TraversalPath

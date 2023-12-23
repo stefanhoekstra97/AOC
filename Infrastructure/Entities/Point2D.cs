@@ -25,6 +25,6 @@ public readonly struct Point2D(int y, int x, int value = 0)
             return Value.ToString();
         }
         
-        return $"(X: {X}, Y: {Y})";
+        return $"{Value}";
     }
 };
