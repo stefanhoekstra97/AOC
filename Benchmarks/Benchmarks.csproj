@@ -14,8 +14,4 @@
       <ProjectReference Include="..\PuzzleSolving\PuzzleSolving.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Benchmarks\2024\" />
-    </ItemGroup>
-
 </Project>

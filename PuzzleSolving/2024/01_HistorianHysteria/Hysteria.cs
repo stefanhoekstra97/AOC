@@ -6,12 +6,11 @@ public class Hysteria : IPuzzleSolver
 {
     public async Task<string> SolveSilver(PuzzleInput input)
     {
-        List<int> firstNumbers = new List<int>(input.Lines.Count);
-        List<int> secondNumbers = new List<int>(input.Lines.Count);
+        var firstNumbers = new List<int>(input.Lines.Count);
+        var secondNumbers = new List<int>(input.Lines.Count);
 
-        foreach (var line in input.Lines)
+        foreach (var split in input.Lines.Select(line => line.Split("  ")))
         {
-            var split = line.Split("  ");
             firstNumbers.Add(int.Parse(split[0]));
             secondNumbers.Add(int.Parse(split[1]));
         }
@@ -24,23 +23,22 @@ public class Hysteria : IPuzzleSolver
 
     public async Task<string> SolveGold(PuzzleInput input)
     {
-        List<int> firstNumbers = new List<int>(input.Lines.Count);
-        List<int> secondNumbers = new List<int>(input.Lines.Count);
+        var firstNumbers = new List<int>(input.Lines.Count);
+        var secondNumbers = new List<int>(input.Lines.Count);
         
         Dictionary<int, (int add, int mult)> firstNumberCounts = new ();
 
-        foreach (var line in input.Lines)
+        foreach (var split in input.Lines.Select(line => line.Split("  ")))
         {
-            var split = line.Split("  ");
             firstNumbers.Add(int.Parse(split[0]));
             secondNumbers.Add(int.Parse(split[1]));
         }
 
-        foreach (int left in firstNumbers)
+        foreach (var left in firstNumbers)
         {
-            if (firstNumberCounts.ContainsKey(left))
+            if (firstNumberCounts.TryGetValue(left, out var value))
             {
-                firstNumberCounts[left] = (firstNumberCounts[left].add + 1, firstNumberCounts[left].mult);
+                firstNumberCounts[left] = (value.add + 1, value.mult);
             }
             else
             {
