@@ -1,7 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using BenchmarkDotNet.Running;
-using Benchmarks.Benchmarks;
 using Benchmarks.Benchmarks._2023;
 
 // var summary = BenchmarkRunner.Run(typeof(CalibrateLaunchBench));

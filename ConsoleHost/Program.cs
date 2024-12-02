@@ -66,10 +66,14 @@
 
 using ConsoleHost.PuzzleRunners._2024;
 
-await Day01Runner.RunSampleAsync();
-await Day01Runner.RunSilverAsync();
-await Day01Runner.RunGoldAsync();
-    
+// await Day01Runner.RunSampleAsync();
+// await Day01Runner.RunSilverAsync();
+// await Day01Runner.RunGoldAsync();
+
+await Day02Runner.RunSampleAsync();
+await Day02Runner.RunSilverAsync();
+await Day02Runner.RunGoldAsync();
+
     
 
 #endregion
