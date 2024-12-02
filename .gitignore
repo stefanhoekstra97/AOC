@@ -4,3 +4,5 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 **/*puzzle_input.txt
+**/silver.txt
+**/gold.txt
