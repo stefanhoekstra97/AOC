@@ -1,8 +1,7 @@
-using Infrastructure;
 using Infrastructure.Readers;
 using PuzzleSolving._2023._17_ClumsyCrucible;
 
-namespace ConsoleHost.PuzzleRunners;
+namespace ConsoleHost.PuzzleRunners._2023;
 
 public static class Day17Runner
 {

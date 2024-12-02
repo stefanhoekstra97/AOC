@@ -1,7 +1,7 @@
 using Infrastructure.Readers;
 using PuzzleSolving._2023._01_calibrate_launch;
 
-namespace ConsoleHost.PuzzleRunners;
+namespace ConsoleHost.PuzzleRunners._2023;
 
 public static class Day01Runner
 {

@@ -1,7 +1,7 @@
 using Infrastructure.Readers;
 using PuzzleSolving._2023._02_CubeGame;
 
-namespace ConsoleHost.PuzzleRunners;
+namespace ConsoleHost.PuzzleRunners._2023;
 
 public class Day02Runner
 {

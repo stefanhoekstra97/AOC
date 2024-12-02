@@ -67,5 +67,6 @@ using Day01Runner = ConsoleHost.PuzzleRunners._2024.Day01Runner;
 #region 2024
 
 await Day01Runner.RunSampleAsync();
-
+await Day01Runner.RunSilverAsync();
+await Day01Runner.RunGoldAsync();
 #endregion

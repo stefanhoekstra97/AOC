@@ -1,8 +1,7 @@
-using Infrastructure;
 using Infrastructure.Readers;
 using PuzzleSolving._2023._12_HotSprings;
 
-namespace ConsoleHost.PuzzleRunners;
+namespace ConsoleHost.PuzzleRunners._2023;
 
 public static class Day12Runner
 {

@@ -4,6 +4,6 @@ namespace PuzzleSolving;
 
 public interface IPuzzleSolver
 {
-    Task<string> SolveEasy(PuzzleInput input);
-    Task<string> SolveHard(PuzzleInput input);
+    Task<string> SolveSilver(PuzzleInput input);
+    Task<string> SolveGold(PuzzleInput input);
 }
