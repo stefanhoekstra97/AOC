@@ -1,5 +1,7 @@
 ﻿using ConsoleHost.PuzzleRunners;
+using Day01Runner = ConsoleHost.PuzzleRunners._2024.Day01Runner;
 
+#region 2023
 // await Day03Runner.TestSecond();
 // await Day04Runner.RunSampleInputPartTwo();
 
@@ -54,7 +56,16 @@
 // await Day17Runner.RunPuzzlePartOne();
 // await Day17Runner.RunPuzzlePartTwo();
 
-await Day18Runner.RunSample();
-await Day18Runner.RunPuzzlePartOne();
+// await Day18Runner.RunSample();
+// await Day18Runner.RunPuzzlePartOne();
 // await Day18Runner.RunPuzzlePartTwo();
 
+
+
+#endregion
+
+#region 2024
+
+await Day01Runner.RunSampleAsync();
+
+#endregion

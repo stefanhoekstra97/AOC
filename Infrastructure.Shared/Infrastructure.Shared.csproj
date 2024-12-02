@@ -7,4 +7,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Readers\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Readers\ReadFile.cs" />
+      <Compile Remove="Entities\PuzzleInput.cs" />
+    </ItemGroup>
+
 </Project>

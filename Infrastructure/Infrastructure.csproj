@@ -10,4 +10,7 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
 </ItemGroup>
+<ItemGroup>
+  <Folder Include="Resources\2023\" />
+</ItemGroup>
 </Project>
