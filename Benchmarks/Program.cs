@@ -18,7 +18,8 @@ using Benchmarks.Benchmarks._2024;
 #region 2024
 
 // var summary = BenchmarkRunner.Run(typeof(Day01Benchmarks2024));
-var summary = BenchmarkRunner.Run(typeof(Day02Benchmarks2024));
+// var summary = BenchmarkRunner.Run(typeof(Day02Benchmarks2024));
+var summary = BenchmarkRunner.Run<Day03Benchmarks2024>();
 
 
 
