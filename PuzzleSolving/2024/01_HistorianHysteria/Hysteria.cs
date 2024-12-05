@@ -4,7 +4,7 @@ namespace PuzzleSolving._2024._01_HistorianHysteria;
 
 public class Hysteria : IPuzzleSolver
 {
-    public async Task<string> SolveSilver(PuzzleInput input)
+    public Task<string> SolveSilver(PuzzleInput input)
     {
         var firstNumbers = new List<int>(input.Lines.Count);
         var secondNumbers = new List<int>(input.Lines.Count);
@@ -18,10 +18,10 @@ public class Hysteria : IPuzzleSolver
         firstNumbers.Sort();
         secondNumbers.Sort();
 
-        return firstNumbers.Zip(secondNumbers).Sum((a) => Math.Abs(a.First - a.Second)).ToString();
+        return Task.FromResult(firstNumbers.Zip(secondNumbers).Sum((a) => Math.Abs(a.First - a.Second)).ToString());
     }
 
-    public async Task<string> SolveGold(PuzzleInput input)
+    public Task<string> SolveGold(PuzzleInput input)
     {
         var firstNumbers = new List<int>(input.Lines.Count);
         var secondNumbers = new List<int>(input.Lines.Count);
@@ -49,6 +49,6 @@ public class Hysteria : IPuzzleSolver
                 }
             }
         }
-        return firstNumberCounts.Sum(a => (a.Key * a.Value.mult) * a.Value.add).ToString();
+        return Task.FromResult(firstNumberCounts.Sum(a => (a.Key * a.Value.mult) * a.Value.add).ToString());
     }
 }

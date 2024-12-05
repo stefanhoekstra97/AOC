@@ -75,7 +75,8 @@ using ConsoleHost.PuzzleRunners._2024;
 // await Day02Runner.RunGoldAsync();
 
 // await Day03Runner.RunAll();    
-await Day04Runner.RunAll();
+// await Day04Runner.RunAll();
+await Day05Runner.RunAll();
 
     
 #endregion

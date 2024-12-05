@@ -4,7 +4,7 @@ namespace PuzzleSolving._2024._04_CeresSearch;
 
 public class CeresSearch : IPuzzleSolver
 {
-    public async Task<string> SolveSilver(PuzzleInput input)
+    public Task<string> SolveSilver(PuzzleInput input)
     {
         var totalCount = 0;
         for (int y = 0; y < input.Lines.Count; y++)
@@ -17,7 +17,7 @@ public class CeresSearch : IPuzzleSolver
                 }
             }
         }
-        return totalCount.ToString();
+        return Task.FromResult(totalCount.ToString());
     }
     
     private static int SearchForXmas(int y, int x, PuzzleInput input)
@@ -159,7 +159,7 @@ public class CeresSearch : IPuzzleSolver
 
         return count;
     }
-    public async Task<string> SolveGold(PuzzleInput input)
+    public Task<string> SolveGold(PuzzleInput input)
     {
         var totalCount = 0;
         for (int y = 1; y < input.Lines.Count - 1 ; y++)
@@ -172,6 +172,6 @@ public class CeresSearch : IPuzzleSolver
                 }
             }
         }
-        return (totalCount / 2).ToString();
+        return Task.FromResult((totalCount / 2).ToString());
     }
 }

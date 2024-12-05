@@ -4,9 +4,9 @@ namespace PuzzleSolving._2024._02_RedNosedReports;
 
 public class RedNosedReports : IPuzzleSolver
 {
-    public async Task<string> SolveSilver(PuzzleInput input)
+    public Task<string> SolveSilver(PuzzleInput input)
     {
-        return input.Lines.Count(l => ReportSafetyInspector(l.Split(" ").Select(int.Parse).ToList())).ToString();
+        return Task.FromResult(input.Lines.Count(l => ReportSafetyInspector(l.Split(" ").Select(int.Parse).ToList())).ToString());
     }
     
     private static bool ReportSafetyInspector(List<int> report)
@@ -26,7 +26,7 @@ public class RedNosedReports : IPuzzleSolver
         return true;
     }
 
-    public async Task<string> SolveGold(PuzzleInput input)
+    public Task<string> SolveGold(PuzzleInput input)
     {
         var safeReports = 0;
         foreach (var line in input.Lines)
@@ -42,7 +42,7 @@ public class RedNosedReports : IPuzzleSolver
                 }
             }
         }
-        return safeReports.ToString();
+        return Task.FromResult(safeReports.ToString());
     }
     private static bool ReportSafetyInspectorWithDampening(List<int> report)
     {
